@@ -1,0 +1,32 @@
+{
+	"name": "NVIDIA 660Ti PyTorch Legacy",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".."
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/bin/python3",
+				"python.formatting.provider": "black"
+			},
+			"extensions": [
+				"ms-python.python"
+			]
+		}
+	},
+	"initializeCommand": "xhost +local:docker",
+	// Самая важная часть: проброс GPU и Экрана (X11)
+	"runArgs": [
+		"--gpus", "all",
+		"--net=host",
+		"-e", "DISPLAY=${env:DISPLAY}", 
+		"-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+		"--privileged" 
+	],
+	// Команда, запускаемая после создания контейнера
+	"postCreateCommand": "python3 -m pip install ipykernel",
+	
+	// Пользователь внутри контейнера (root нужен для доступа к старым путям CUDA без лишней боли)
+	"remoteUser": "root"
+}
