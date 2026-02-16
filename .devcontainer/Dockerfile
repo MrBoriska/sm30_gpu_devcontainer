@@ -36,6 +36,7 @@ ENV LDFLAGS="-L/usr/lib/x86_64-linux-gnu -ldl -lrt"
 # и Python 3.6. Более новые версии не соберутся.
 RUN pip install "cupy==10.6.0"
 
+
 # --- ДОПОЛНИТЕЛЬНЫЕ БИБЛИОТЕКИ (Опционально) ---
 # Ставим старые версии библиотек, совместимые с Python 3.6
 RUN pip install --no-cache-dir \
@@ -44,6 +45,10 @@ RUN pip install --no-cache-dir \
     "pandas==1.4.4" \
     "matplotlib==3.5.3" \
     "scikit-learn==1.0.2"
+
+# LLM support
+RUN pip install 'transformers==4.40.0'
+RUN pip install --upgrade 'huggingface_hub<1.0' 'tokenizers<0.20,>=0.19' 'jinja2>=3.0.0'
 
 WORKDIR /app
 
